@@ -1,0 +1,283 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-color: #6c63ff;
+    --secondary-color: #3a3542;
+    --accent-color: #ff6b6b;
+    --text-color: #f4f4f4;
+    --dark-bg: #121212;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --button-hover: #8a82ff;
+    --border-radius: 0.8rem;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: linear-gradient(135deg, 
+        #0f0c29, 
+        #302b63, 
+        #24243e,
+        #302b63,
+        #0f0c29
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+header, footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    color: var(--text-color);
+    text-align: center;
+    padding: 1.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 1;
+    gap: 2rem;
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.data-container {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.data-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.record {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.record:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.buttons a {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.buttons a:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.edit a {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background-color: #ffd166;
+    color: #333;
+    border: none;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit a:hover {
+    background-color: #ffda85;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.view {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.view:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.view a {
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+    width: 80%;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view a:hover {
+    background-color: var(--button-hover);
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.4rem;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+.new {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.new h2 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 0 1rem;
+    }
+    
+    .data-container, .view {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    
+    .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+.form-group input:focus {
+    outline: none;
+    border-color: #6c63ff;
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25);
+}
+
+.form-group button[type="submit"] {
+    padding: 1rem 2rem;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group button[type="submit"]:hover {
+    background-color: #8a82ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto de enfoque para accesibilidad */
+.form-group button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.5);
+}
