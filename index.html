@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Aplicación Web</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">Mi App</div>
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#servicios" class="nav-link">Servicios</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section id="inicio" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Bienvenido a Mi Aplicación</h1>
+                <p class="hero-subtitle">Una aplicación moderna con HTML, CSS y JavaScript</p>
+                <button class="btn btn-primary" id="cta-button">Comenzar</button>
+            </div>
+        </section>
+
+        <section id="servicios" class="services">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card" data-service="web">
+                    <div class="service-icon">🌐</div>
+                    <h3>Desarrollo Web</h3>
+                    <p>Creamos sitios web modernos y responsivos</p>
+                </div>
+                <div class="service-card" data-service="mobile">
+                    <div class="service-icon">📱</div>
+                    <h3>Aplicaciones Móviles</h3>
+                    <p>Desarrollo de apps nativas y híbridas</p>
+                </div>
+                <div class="service-card" data-service="design">
+                    <div class="service-icon">🎨</div>
+                    <h3>Diseño UI/UX</h3>
+                    <p>Interfaces intuitivas y atractivas</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="counter-section">
+            <h2 class="section-title">Estadísticas</h2>
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <span class="counter-number" data-target="150">0</span>
+                    <span class="counter-label">Proyectos Completados</span>
+                </div>
+                <div class="counter-item">
+                    <span class="counter-number" data-target="50">0</span>
+                    <span class="counter-label">Clientes Satisfechos</span>
+                </div>
+                <div class="counter-item">
+                    <span class="counter-number" data-target="5">0</span>
+                    <span class="counter-label">Años de Experiencia</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="contact">
+            <h2 class="section-title">Contáctanos</h2>
+            <form class="contact-form" id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Mi Aplicación. Todos los derechos reservados.</p>
+    </footer>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>¡Gracias por tu interés!</h2>
+            <p>Nos pondremos en contacto contigo pronto.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
