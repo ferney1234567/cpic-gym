@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Requisitos - Versión Premium</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Enhanced Color Palette */
+            --primary-blue: #3b82f6;
+            --dark-blue: #1e40af;
+            --light-blue: #dbeafe;
+            --success-green: #10b981;
+            --success-light: #d1fae5;
+            --warning-orange: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger-red: #ef4444;
+            --danger-light: #fee2e2;
+            --purple: #8b5cf6;
+            --purple-light: #ede9fe;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease-out;
+            --transition-normal: 0.3s ease-out;
+            --transition-slow: 0.5s ease-out;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--neutral-700);
+            position: relative;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .requirements-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        /* Header Styles */
+        .panel-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: var(--spacing-2xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.4;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 4rem;
+            height: 4rem;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .header-icon i {
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .panel-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .panel-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .progress-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 8;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .progress-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            background: var(--neutral-50);
+            padding: var(--spacing-sm);
+            border-bottom: 1px solid var(--neutral-200);
+            gap: var(--spacing-sm);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+
+        .tab-btn:hover {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            box-shadow: var(--shadow-md);
+            font-weight: 600;
+            transform: translateY(-2px);
+        }
+
+        /* Search and Filter Bar */
+        .search-filter-bar {
+            padding: var(--spacing-xl);
+            background: white;
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            flex: 1;
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+            font-size: 1rem;
+            transition: color var(--transition-fast);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            background: var(--neutral-50);
+            transition: all var(--transition-normal);
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--primary-blue);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .status-filter {
+            display: flex;
+            gap: var(--spacing-xs);
+            background: var(--neutral-100);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-lg);
+        }
+
+        .status-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-btn.all {
+            background: var(--neutral-600);
+            color: white;
+        }
+
+        .status-btn.completed {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .status-btn.pending {
+            background: var(--warning-orange);
+            color: white;
+        }
+
+        .status-btn.active {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: var(--spacing-xl);
+            background: white;
+            max-height: 500px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-area::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+            border-radius: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+        }
+
+        /* Requirement Sections */
+        .requirement-section {
+            margin-bottom: var(--spacing-xl);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            background: white;
+        }
+
+        .requirement-section:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .requirement-section.completed {
+            border-color: var(--success-green);
+            background: linear-gradient(135deg, var(--success-light) 0%, white 100%);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-xl);
+            background: var(--neutral-50);
+            border-bottom: 2px solid var(--neutral-200);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .section-header:hover::before {
+            left: 100%;
+        }
+
+        .section-header:hover {
+            background: var(--light-blue);
+        }
+
+        .requirement-section.completed .section-header {
+            background: var(--success-light);
+        }
+
+        .section-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-lg);
+            color: white;
+            font-size: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .requirement-section.completed .section-icon {
+            background: linear-gradient(135deg, var(--success-green), #059669);
+        }
+
+        .section-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: iconShine 4s ease-in-out infinite;
+        }
+
+        @keyframes iconShine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .section-title {
+            flex: 1;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--neutral-700);
+            position: relative;
+        }
+
+        .section-stats {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-right: var(--spacing-lg);
+        }
+
+        .stats-badge {
+            background: var(--primary-blue);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .requirement-section.completed .stats-badge {
+            background: var(--success-green);
+        }
+
+        .expand-btn {
+            background: var(--neutral-100);
+            border: 2px solid var(--neutral-200);
+            color: var(--neutral-600);
+            cursor: pointer;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-normal);
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expand-btn:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .expand-btn i {
+            transition: transform var(--transition-normal);
+            font-size: 1.125rem;
+        }
+
+        .expand-btn:not(.active) i {
+            transform: rotate(-90deg);
+        }
+
+        /* Section Content */
+        .section-content {
+            padding: 0;
+            max-height: 1000px;
+            overflow: hidden;
+            transition: all var(--transition-slow);
+            background: white;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            padding: 0;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid var(--neutral-100);
+            transition: all var(--transition-normal);
+            position: relative;
+            background: white;
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+
+        .requirement-item:hover {
+            background: var(--light-blue);
+            transform: translateX(5px);
+        }
+
+        .requirement-item.completed {
+            background: var(--success-light);
+        }
+
+        .requirement-item.completed:hover {
+            background: #a7f3d0;
+        }
+
+        /* Enhanced Custom Checkbox */
+        .checkbox-container {
+            margin-right: var(--spacing-xl);
+            position: relative;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-label {
+            display: block;
+            width: 1.75rem;
+            height: 1.75rem;
+            background: white;
+            border: 3px solid var(--neutral-300);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            position: relative;
+            transition: all var(--transition-normal);
+            overflow: hidden;
+        }
+
+        .checkbox-label::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: all var(--transition-normal);
+        }
+
+        .checkbox-label:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: scale(1.05);
+        }
+
+        .checkbox-container input[type="checkbox"]:checked + .checkbox-label {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            animation: checkboxPulse 0.3s ease;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked + .checkbox-label::before {
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .checkbox-container input[type="checkbox"]:checked + .checkbox-label::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 900;
+            animation: checkmarkAppear 0.3s ease 0.1s both;
+        }
+
+        @keyframes checkboxPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes checkmarkAppear {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(180deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+
+        .requirement-text {
+            font-size: 1rem;
+            color: var(--neutral-700);
+            font-weight: 500;
+            flex: 1;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .requirement-item.completed .requirement-text {
+            color: var(--success-green);
+            font-weight: 600;
+            text-decoration: line-through;
+            text-decoration-color: var(--success-green);
+            text-decoration-thickness: 2px;
+        }
+
+        .requirement-priority {
+            margin-left: var(--spacing-md);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-high {
+            background: var(--danger-light);
+            color: var(--danger-red);
+        }
+
+        .priority-medium {
+            background: var(--warning-light);
+            color: var(--warning-orange);
+        }
+
+        .priority-low {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            padding: var(--spacing-xl);
+            background: linear-gradient(135deg, var(--neutral-50) 0%, white 100%);
+            border-top: 2px solid var(--neutral-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .completion-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-weight: 600;
+            color: var(--neutral-700);
+        }
+
+        .status-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .status-icon.completed {
+            background: var(--success-green);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-icon.progress {
+            background: var(--warning-orange);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .btn-secondary, .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--neutral-600);
+            border: 2px solid var(--neutral-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neutral-50);
+            border-color: var(--neutral-400);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            box-shadow: var(--shadow-md);
+            border: 2px solid transparent;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-md);
+            }
+            
+            .panel-header {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--spacing-lg);
+                padding: var(--spacing-xl);
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+            
+            .header-icon {
+                margin-right: 0;
+            }
+            
+            .tab-navigation {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .search-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-controls {
+                justify-content: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+            
+            .button-group {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn-secondary, .btn-primary {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--success-green);
+            color: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            font-size: 1.25rem;
+            font-weight: 700;
+            z-index: 1000;
+            opacity: 0;
+            animation: successPop 2s ease;
+            pointer-events: none;
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes successPop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            30% { transform: translate(-50%, -50%) scale(1); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        }
+
+        /* Filter indicators */
+        .filter-active-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 12px;
+            height: 12px;
+            background: var(--danger-red);
+            border-radius: 50%;
+            font-size: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Hidden state for filtered items */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Smooth reveal animation */
+        .reveal {
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="requirements-panel">
+            <!-- Header -->
+            <div class="panel-header">
+                <div class="header-content">
+                    <div class="header-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="header-text">
+                        <h1 class="panel-title">Gestión de Requisitos</h1>
+                        <p class="panel-subtitle">Sistema avanzado de seguimiento y control</p>
+                    </div>
+                </div>
+                <div class="progress-indicator">
+                    <div class="progress-circle">
+                        <svg class="progress-ring">
+                            <circle class="progress-ring-bg" cx="40" cy="40" r="35"></circle>
+                            <circle class="progress-ring-fill" cx="40" cy="40" r="35"></circle>
+                        </svg>
+                        <div class="progress-text">0%</div>
+                    </div>
+                    <div class="progress-label">Completado</div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="tecnicos">
+                    <i class="fas fa-code"></i> Técnicos
+                </button>
+                <button class="tab-btn" data-tab="tecnologicos">
+                    <i class="fas fa-microchip"></i> Tecnológicos
+                </button>
+                <button class="tab-btn" data-tab="certificaciones">
+                    <i class="fas fa-certificate"></i> Certificaciones
+                </button>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="search-filter-bar">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Buscar requisitos...">
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-btn" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                        Filtros
+                        <span class="filter-active-indicator hidden">3</span>
+                    </button>
+                    <div class="status-filter">
+                        <button class="status-btn all active" data-status="all">Todos</button>
+                        <button class="status-btn completed" data-status="completed">Completados</button>
+                        <button class="status-btn pending" data-status="pending">Pendientes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Administrativos Section -->
+                <div class="requirement-section" data-category="administrativos">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <h2 class="section-title">Administrativos</h2>
+                        <div class="section-stats">
+                            <div class="stats-badge">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="completed-count">2</span>/<span class="total-count">3</span>
+                            </div>
+                        </div>
+                        <button class="expand-btn active" onclick="toggleSection(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="section-content">
+                        <div class="requirement-item completed" data-priority="high">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req1" checked>
+                                <label for="req1" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Saber un lenguaje de programación</span>
+                            <div class="requirement-priority priority-high">Alta</div>
+                        </div>
+                        <div class="requirement-item completed" data-priority="medium">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req2" checked>
+                                <label for="req2" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Saber 2 idiomas</span>
+                            <div class="requirement-priority priority-medium">Media</div>
+                        </div>
+                        <div class="requirement-item" data-priority="low">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req3">
+                                <label for="req3" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Experiencia en gestión de equipos</span>
+                            <div class="requirement-priority priority-low">Baja</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documentación Section -->
+                <div class="requirement-section" data-category="documentacion">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h2 class="section-title">Documentación</h2>
+                        <div class="section-stats">
+                            <div class="stats-badge">
+                                <i class="fas fa-clock"></i>
+                                <span class="completed-count">0</span>/<span class="total-count">4</span>
+                            </div>
+                        </div>
+                        <button class="expand-btn" onclick="toggleSection(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="section-content collapsed">
+                        <div class="requirement-item" data-priority="high">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req4">
+                                <label for="req4" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Título profesional</span>
+                            <div class="requirement-priority priority-high">Alta</div>
+                        </div>
+                        <div class="requirement-item" data-priority="high">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req5">
+                                <label for="req5" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Cédula de ciudadanía</span>
+                            <div class="requirement-priority priority-high">Alta</div>
+                        </div>
+                        <div class="requirement-item" data-priority="medium">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req6">
+                                <label for="req6" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Hoja de vida actualizada</span>
+                            <div class="requirement-priority priority-medium">Media</div>
+                        </div>
+                        <div class="requirement-item" data-priority="low">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req7">
+                                <label for="req7" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Referencias laborales</span>
+                            <div class="requirement-priority priority-low">Baja</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financieros Section -->
+                <div class="requirement-section" data-category="financieros">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 class="section-title">Financieros</h2>
+                        <div class="section-stats">
+                            <div class="stats-badge">
+                                <i class="fas fa-clock"></i>
+                                <span class="completed-count">0</span>/<span class="total-count">3</span>
+                            </div>
+                        </div>
+                        <button class="expand-btn" onclick="toggleSection(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="section-content collapsed">
+                        <div class="requirement-item" data-priority="high">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req8">
+                                <label for="req8" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Referencias comerciales</span>
+                            <div class="requirement-priority priority-high">Alta</div>
+                        </div>
+                        <div class="requirement-item" data-priority="medium">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req9">
+                                <label for="req9" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Estado financiero</span>
+                            <div class="requirement-priority priority-medium">Media</div>
+                        </div>
+                        <div class="requirement-item" data-priority="low">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="req10">
+                                <label for="req10" class="checkbox-label"></label>
+                            </div>
+                            <span class="requirement-text">Certificado de ingresos</span>
+                            <div class="requirement-priority priority-low">Baja</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div class="completion-status">
+                    <div class="status-icon progress">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <span>En progreso - <span id="completedItems">2</span> de <span id="totalItems">10</span> completados</span>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Animation -->
+    <div class="success-animation" id="successAnimation">
+        <i class="fas fa-check-circle"></i> ¡Requisito completado!
+    </div>
+
+    <script>
+        // Global variables
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateSectionStats();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Status filter buttons
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.status;
+                    applyFilters();
+                });
+            });
+
+            // Search functionality
+            document.querySelector('.search-input').addEventListener('input', function(e) {
+                currentSearch = e.target.value.toLowerCase();
+                applyFilters();
+            });
+
+            // Checkbox interaction
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    handleCheckboxChange(this);
+                });
+            });
+        }
+
+        function handleCheckboxChange(checkbox) {
+            const item = checkbox.closest('.requirement-item');
+            const section = checkbox.closest('.requirement-section');
+            
+            if (checkbox.checked) {
+                // Mark as completed
+                item.classList.add('completed');
+                showSuccessAnimation();
+                
+                // Add confetti effect
+                createConfetti(checkbox.getBoundingClientRect());
+            } else {
+                // Mark as pending
+                item.classList.remove('completed');
+            }
+            
+            updateProgress();
+            updateSectionStats();
+            updateSectionCompletion(section);
+            applyFilters();
+        }
+
+        function showSuccessAnimation() {
+            const animation = document.getElementById('successAnimation');
+            animation.style.display = 'block';
+            animation.style.animation = 'none';
+            animation.offsetHeight; // Trigger reflow
+            animation.style.animation = 'successPop 2s ease';
+            
+            setTimeout(() => {
+                animation.style.display = 'none';
+            }, 2000);
+        }
+
+        function createConfetti(rect) {
+            for (let i = 0; i < 10; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = rect.left + rect.width/2 + 'px';
+                confetti.style.top = rect.top + rect.height/2 + 'px';
+                confetti.style.width = '6px';
+                confetti.style.height = '6px';
+                confetti.style.backgroundColor = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][Math.floor(Math.random() * 4)];
+                confetti.style.zIndex = '9999';
+                confetti.style.borderRadius = '50%';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                const angle = (Math.PI * 2 * i) / 10;
+                const velocity = 100 + Math.random() * 50;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let x = 0, y = 0, gravity = 300;
+                let startTime = Date.now();
+                
+                function animateConfetti() {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    x = vx * elapsed;
+                    y = vy * elapsed + 0.5 * gravity * elapsed * elapsed;
+                    
+                    confetti.style.transform = `translate(${x}px, ${y}px)`;
+                    confetti.style.opacity = Math.max(0, 1 - elapsed * 2);
+                    
+                    if (elapsed < 1) {
+                        requestAnimationFrame(animateConfetti);
+                    } else {
+                        document.body.removeChild(confetti);
+                    }
+                }
+                
+                requestAnimationFrame(animateConfetti);
+            }
+        }
+
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+            const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const percentage = Math.round((checkedCheckboxes / totalCheckboxes) * 100);
+            
+            // Update progress text
+            document.querySelector('.progress-text').textContent = percentage + '%';
+            
+            // Update progress ring
+            const progressRing = document.querySelector('.progress-ring-fill');
+            const circumference = 2 * Math.PI * 35;
+            const offset = circumference - (percentage / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+            
+            // Update completion status
+            const statusIcon = document.querySelector('.status-icon');
+            const completionText = document.querySelector('.completion-status span');
+            
+            document.getElementById('completedItems').textContent = checkedCheckboxes;
+            document.getElementById('totalItems').textContent = totalCheckboxes;
+            
+            if (percentage === 100) {
+                statusIcon.className = 'status-icon completed';
+                statusIcon.innerHTML = '<i class="fas fa-check"></i>';
+                completionText.innerHTML = '¡Completado! - Todos los requisitos cumplidos';
+                
+                // Show completion celebration
+                setTimeout(() => {
+                    alert('🎉 ¡Felicitaciones! Has completado todos los requisitos.');
+                }, 500);
+            } else {
+                statusIcon.className = 'status-icon progress';
+                statusIcon.innerHTML = '<i class="fas fa-clock"></i>';
+            }
+        }
+
+        function updateSectionStats() {
+            document.querySelectorAll('.requirement-section').forEach(section => {
+                const totalItems = section.querySelectorAll('input[type="checkbox"]').length;
+                const completedItems = section.querySelectorAll('input[type="checkbox"]:checked').length;
+                
+                section.querySelector('.completed-count').textContent = completedItems;
+                section.querySelector('.total-count').textContent = totalItems;
+                
+                const badge = section.querySelector('.stats-badge i');
+                if (completedItems === totalItems && totalItems > 0) {
+                    badge.className = 'fas fa-check-circle';
+                } else {
+                    badge.className = 'fas fa-clock';
+                }
+            });
+        }
+
+        function updateSectionCompletion(section) {
+            const totalItems = section.querySelectorAll('input[type="checkbox"]').length;
+            const completedItems = section.querySelectorAll('input[type="checkbox"]:checked').length;
+            
+            if (completedItems === totalItems && totalItems > 0) {
+                section.classList.add('completed');
+            } else {
+                section.classList.remove('completed');
+            }
+        }
+
+        function applyFilters() {
+            const sections = document.querySelectorAll('.requirement-section');
+            let visibleSections = 0;
+            
+            sections.forEach(section => {
+                const items = section.querySelectorAll('.requirement-item');
+                let visibleItems = 0;
+                
+                items.forEach(item => {
+                    const text = item.querySelector('.requirement-text').textContent.toLowerCase();
+                    const isCompleted = item.classList.contains('completed');
+                    
+                    let showItem = true;
+                    
+                    // Apply search filter
+                    if (currentSearch && !text.includes(currentSearch)) {
+                        showItem = false;
+                    }
+                    
+                    // Apply status filter
+                    if (currentFilter === 'completed' && !isCompleted) {
+                        showItem = false;
+                    } else if (currentFilter === 'pending' && isCompleted) {
+                        showItem = false;
+                    }
+                    
+                    if (showItem) {
+                        item.classList.remove('hidden');
+                        item.classList.add('reveal');
+                        visibleItems++;
+                    } else {
+                        item.classList.add('hidden');
+                        item.classList.remove('reveal');
+                    }
+                });
+                
+                // Show/hide entire section based on visible items
+                if (visibleItems > 0) {
+                    section.classList.remove('hidden');
+                    visibleSections++;
+                    
+                    // Auto-expand sections with search results
+                    if (currentSearch && visibleItems > 0) {
+                        const expandBtn = section.querySelector('.expand-btn');
+                        const content = section.querySelector('.section-content');
+                        expandBtn.classList.add('active');
+                        content.classList.remove('collapsed');
+                    }
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+            
+            // Update filter indicator
+            const filterIndicator = document.querySelector('.filter-active-indicator');
+            const activeFilters = (currentFilter !== 'all' ? 1 : 0) + (currentSearch ? 1 : 0);
+            
+            if (activeFilters > 0) {
+                filterIndicator.textContent = activeFilters;
+                filterIndicator.classList.remove('hidden');
+            } else {
+                filterIndicator.classList.add('hidden');
+            }
+        }
+
+        function toggleSection(btn) {
+            const section = btn.closest('.requirement-section');
+            const content = section.querySelector('.section-content');
+            const icon = btn.querySelector('i');
+            
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                content.classList.add('collapsed');
+                icon.style.transform = 'rotate(-90deg)';
+            } else {
+                btn.classList.add('active');
+                content.classList.remove('collapsed');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Initialize all sections completion status
+        document.querySelectorAll('.requirement-section').forEach(section => {
+            updateSectionCompletion(section);
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                document.querySelector('.search-input').focus();
+            }
+        });
+    </script>
+</body>
+</html>
